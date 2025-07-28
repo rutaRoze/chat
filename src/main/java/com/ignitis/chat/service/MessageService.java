@@ -6,14 +6,14 @@ import com.ignitis.chat.mapper.MessageMapper;
 import com.ignitis.chat.persistance.ChannelRepository;
 import com.ignitis.chat.persistance.MessageRepository;
 import com.ignitis.chat.persistance.UserRepository;
-import com.ignitis.chat.persistance.model.Channel;
 import com.ignitis.chat.persistance.model.Message;
 import com.ignitis.chat.persistance.model.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,34 +25,31 @@ public class MessageService {
     private final ChannelRepository channelRepository;
     private final MessageMapper messageMapper;
 
+    @Transactional
     public void createMessage(String message, Long userId, Long channelId) {
 
-        User user = userRepository.findById(userId).orElseThrow(
+        User user = userRepository.findUserById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User not found by id: " + userId));
 
         if (user.getDeletedAt() != null) {
             throw new UserDeletedException("Message cannot be posted by anonymous user");
         }
 
-        Channel channel = channelRepository.findById(channelId).orElseThrow(
+        channelRepository.findChannelById(channelId).orElseThrow(
                 () -> new EntityNotFoundException("Channel not found by id: " + channelId));
 
-        Message messageToSave = messageMapper.mapToMassage(message, user, channel);
+        LocalDateTime messageSentAt = LocalDateTime.now();
 
-        user.addMessage(messageToSave);
-        channel.addMessage(messageToSave);
-
-        messageRepository.save(messageToSave);
+        messageRepository.saveMessage(message, messageSentAt, userId, channelId);
     }
 
     public List<MessageResponse> getMessages() {
-        List<Message> messages = messageRepository.findAll();
+        List<Message> sortedMessages = messageRepository.findAllMessagesSortedBySentAtDesc();
 
-        List<MessageResponse> sortedMessageResponses = messages.stream()
+        List<MessageResponse> messageResponses = sortedMessages.stream()
                 .map(messageMapper::mapToMessageResponse)
-                .sorted(Comparator.comparing(MessageResponse::getMessageTime).reversed())
                 .toList();
 
-        return sortedMessageResponses;
+        return messageResponses;
     }
 }

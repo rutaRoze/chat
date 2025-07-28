@@ -10,6 +10,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
 @Entity
 @Table(name = "channel")
@@ -25,9 +26,4 @@ public class Channel {
 
     @OneToMany(mappedBy = "channel")
     private List<Message> messages = new ArrayList<>();
-
-    public void addMessage(Message message) {
-        messages.add(message);
-        message.setChannel(this);
-    }
 }

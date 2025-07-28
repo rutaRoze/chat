@@ -13,9 +13,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
 @Entity
-@Table(name = "`user`")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -37,15 +38,6 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    public void addRole(Role role) {
-        roles.add(role);
-    }
-
     @OneToMany(mappedBy = "sender")
     private List<Message> messages = new ArrayList<>();
-
-    public void addMessage(Message message) {
-        messages.add(message);
-        message.setSender(this);
-    }
 }
