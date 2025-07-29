@@ -18,4 +18,37 @@ public interface UserRepository extends JpaRepository<User, Long> {
             nativeQuery = true
     )
     Optional<User> findUserById(@Param("userId") Long userId);
+
+    @Query(
+            value = "SELECT EXISTS (SELECT 1 FROM users WHERE username ILIKE :username)",
+            nativeQuery = true
+    )
+    boolean doesUserExistIgnoreCase(@Param("username") String username);
+
+    @Modifying
+    @Query(
+            value = "INSERT INTO users (username) VALUES (:username)",
+            nativeQuery = true)
+    void saveUser(@Param("username") String username);
+
+    @Query(
+            value = "SELECT user_id FROM users WHERE username = :username",
+            nativeQuery = true)
+    Long findUserIdByUsername(@Param("username") String username);
+
+    @Modifying
+    @Query(
+            value = "INSERT INTO user_roles (user_id, role_id) VALUES (:userId, :roleId)",
+            nativeQuery = true)
+    void linkUserRole(@Param("userId") Long userId, @Param("roleId") Long roleId);
+
+    @Modifying
+    @Query(value = """
+            UPDATE users
+            SET username = :newUsername, deleted_at = :deletedAt
+            WHERE user_id = :userId
+            """, nativeQuery = true)
+    void softDeleteUser(@Param("userId") Long userId,
+                        @Param("newUsername") String newUsername,
+                        @Param("deletedAt") LocalDateTime deletedAt);
 }

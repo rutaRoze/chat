@@ -22,7 +22,7 @@ public class MessageController {
     public ResponseEntity<String> postMessage(
             @Valid @RequestBody MessageRequest messageRequest) {
 
-        messageService.createMessage(messageRequest.getMessage(), messageRequest.getUserId(), messageRequest.getChannelId());
+        messageService.createMessage(messageRequest.getMessageContent(), messageRequest.getUserId(), messageRequest.getChannelId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Message posted");
     }

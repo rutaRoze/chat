@@ -15,7 +15,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     @Modifying
     @Query(
-            value = "INSERT INTO message (content, sent_at, user_id, channel_id) " +
+            value = "INSERT INTO message (message_content, sent_at, user_id, channel_id) " +
                     "VALUES (:content, :sentAt, :userId, :channelId)",
             nativeQuery = true
     )
@@ -29,4 +29,26 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             nativeQuery = true
     )
     List<Message> findAllMessagesSortedBySentAtDesc();
+
+
+    @Query(value = """
+                SELECT
+                    u.user_id AS userId,
+                    u.username AS username,
+                    COUNT(m.message_id) AS messageCount,
+                    MIN(m.sent_at) AS oldestMessageTime,
+                    MAX(m.sent_at) AS latestMessageTime,
+                    AVG(LENGTH(m.message_content)) AS averageMessageLength,
+                    (
+                        SELECT m2.message_content
+                        FROM message m2
+                        WHERE m2.user_id = u.user_id
+                        ORDER BY m2.sent_at DESC
+                        LIMIT 1
+                    ) AS latestMessage
+                FROM users u
+                LEFT JOIN message m ON u.user_id = m.user_id
+                GROUP BY u.user_id, u.username
+            """, nativeQuery = true)
+    List<Object[]> findUserStatisticsRaw();
 }

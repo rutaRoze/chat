@@ -11,7 +11,7 @@ import lombok.ToString;
 public class MessageRequest {
 
     @NotBlank
-    private String message;
+    private String messageContent;
 
     @NotNull
     @Min(1)
