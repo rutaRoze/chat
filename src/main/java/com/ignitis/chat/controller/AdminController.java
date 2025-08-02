@@ -104,7 +104,7 @@ public class AdminController {
                             array = @ArraySchema(schema = @Schema(implementation = UserStatisticResponse.class)))),
             @ApiResponse(responseCode = "403", description = "Access denied: Administrator privileges required")})
     @GetMapping("/user/statistic")
-    public ResponseEntity<Object> getStatisticByUser(
+    public ResponseEntity<Object> getUsersStatistic(
             @Parameter(description = "Admin user id. Requires administrative privileges.")
             @Min(1)
             @RequestParam Long adminId) {
@@ -113,7 +113,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(FORBIDDEN_MESSAGE);
         }
 
-        List<UserStatisticResponse> response = adminService.getUserStatistic();
+        List<UserStatisticResponse> response = adminService.getUsersStatistic();
 
         return ResponseEntity.ok(response);
     }

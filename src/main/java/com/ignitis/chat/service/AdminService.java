@@ -64,7 +64,7 @@ public class AdminService {
         userRepository.softDeleteUser(userId, softDeletedUsername, deletedAt);
     }
 
-    public List<UserStatisticResponse> getUserStatistic() {
+    public List<UserStatisticResponse> getUsersStatistic() {
 
         List<Object[]> rawUserStatisticsData = messageRepository.findUserStatisticsRaw();
         List<UserStatisticResponse> responses = new ArrayList<>();

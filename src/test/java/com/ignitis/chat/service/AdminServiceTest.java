@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ignitis.chat.service.TestUtil.*;
+import static com.ignitis.chat.TestUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -106,7 +106,7 @@ class AdminServiceTest {
         when(userStatisticMapper.mapToUseStatisticResponse(rawList.get(0))).thenReturn(mockResponse1);
         when(userStatisticMapper.mapToUseStatisticResponse(rawList.get(1))).thenReturn(mockResponse2);
 
-        List<UserStatisticResponse> results = adminService.getUserStatistic();
+        List<UserStatisticResponse> results = adminService.getUsersStatistic();
 
         assertEquals(2, results.size());
         assertEquals(USERNAME, results.get(0).getUsername());

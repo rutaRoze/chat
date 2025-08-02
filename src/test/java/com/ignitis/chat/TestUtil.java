@@ -1,5 +1,6 @@
-package com.ignitis.chat.service;
+package com.ignitis.chat;
 
+import com.ignitis.chat.dto.MessageRequest;
 import com.ignitis.chat.dto.MessageResponse;
 import com.ignitis.chat.dto.UserStatisticResponse;
 import com.ignitis.chat.persistance.model.*;
@@ -66,6 +67,14 @@ public class TestUtil {
         return MessageResponse.builder()
                 .message(messageContent)
                 .messageTime(sentAt)
+                .build();
+    }
+
+    public static MessageRequest buildMessageRequest(String messageContent, Long userId, Long channelId) {
+        return MessageRequest.builder()
+                .messageContent(messageContent)
+                .userId(userId)
+                .channelId(channelId)
                 .build();
     }
 }
