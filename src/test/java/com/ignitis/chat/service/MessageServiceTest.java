@@ -99,7 +99,6 @@ class MessageServiceTest {
 
         MessageResponse response1 = buildMessageResponse(MESSAGE, messageTime.minusMinutes(200));
         MessageResponse response2 = buildMessageResponse(MESSAGE2, messageTime);
-        ;
 
         List<Message> messages = List.of(message2, message1);
 

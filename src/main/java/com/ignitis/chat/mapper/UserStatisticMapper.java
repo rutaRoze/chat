@@ -27,6 +27,9 @@ public class UserStatisticMapper {
     }
 
     private LocalDateTime toLocalDateTime(Object object) {
-        return object instanceof Timestamp ? ((Timestamp) object).toLocalDateTime() : null;
+        if (object instanceof Timestamp timestamp) {
+            return timestamp.toLocalDateTime();
+        }
+        return null;
     }
 }
