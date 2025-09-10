@@ -52,11 +52,10 @@ sonarqube {
 
 jacocoTestReport {
 	reports {
-		xml.required = true
-		html.required = false
+		xml.required.set(true)
+		html.required.set(false)
 	}
 }
-
 
 tasks.named('test') {
 	useJUnitPlatform()
