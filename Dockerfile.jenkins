@@ -10,4 +10,7 @@ RUN apt-get update && \
     apt-get install -y docker-ce-cli && \
     rm -rf /var/lib/apt/lists/*
 
+RUN groupadd docker || true && \
+    usermod -aG docker jenkins
+
 USER jenkins
