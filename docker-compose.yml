@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   jenkins:
+    image: chat_jenkins:latest
     build:
       context: .
       dockerfile: Dockerfile.jenkins
