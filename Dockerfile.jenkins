@@ -8,9 +8,8 @@ RUN apt-get update && \
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian bullseye stable" > /etc/apt/sources.list.d/docker.list && \
     apt-get update && \
     apt-get install -y docker-ce-cli && \
+    groupadd -g 999 docker && \
+    usermod -aG docker jenkins && \
     rm -rf /var/lib/apt/lists/*
-
-RUN groupadd docker || true && \
-    usermod -aG docker jenkins
 
 USER jenkins
