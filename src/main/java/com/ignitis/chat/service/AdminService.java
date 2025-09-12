@@ -46,12 +46,10 @@ public class AdminService {
 
         userRepository.linkUserRole(userId, userRole.getId());
 
-        User savedUser = User.builder()
+        return User.builder()
                 .username(trimmedUsername)
                 .roles(Set.of(userRole))
                 .build();
-
-        return savedUser;
     }
 
     @Transactional
@@ -79,6 +77,7 @@ public class AdminService {
         return responses;
     }
 
+    @Transactional
     public boolean hasAdminAccess(Long userId) {
 
         User user = findUser(userId);

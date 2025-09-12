@@ -8,12 +8,14 @@ import com.ignitis.chat.persistance.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Component
+@Profile("!test")
 @RequiredArgsConstructor
 public class TestDataLoader implements ApplicationRunner {
 
@@ -30,7 +32,7 @@ public class TestDataLoader implements ApplicationRunner {
     private User user2;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         persistRoles();
         persistChannel();
         createAdmin();

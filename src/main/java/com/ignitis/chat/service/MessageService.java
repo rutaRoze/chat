@@ -46,10 +46,8 @@ public class MessageService {
     public List<MessageResponse> getMessages() {
         List<Message> sortedMessages = messageRepository.findAllMessagesSortedBySentAtDesc();
 
-        List<MessageResponse> messageResponses = sortedMessages.stream()
+        return sortedMessages.stream()
                 .map(messageMapper::mapToMessageResponse)
                 .toList();
-
-        return messageResponses;
     }
 }
