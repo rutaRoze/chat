@@ -42,19 +42,18 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker image...'
-                sh "docker build -t chat-app:\${BUILD_NUMBER} ."
-                sh "docker tag chat-app:\${BUILD_NUMBER} chat-app:latest"
+                sh 'docker build -t chat-app:latest .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
                 echo 'Running Docker container...'
-                sh '''#!/bin/bash
-        docker stop chat-app || true
-        docker rm chat-app || true
-        docker run -d --name chat-app -p 8080:8080 chat-app:${BUILD_NUMBER}
-        '''
+                sh '''
+                docker stop chat-app || true
+                docker rm chat-app || true
+                docker run -d --name chat-app -p 8080:8080 chat-app:latest
+                '''
             }
         }
     }
