@@ -33,7 +33,7 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                timeout(time: 5, unit: 'MINUTES') {
+                timeout(time: 2, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
@@ -42,7 +42,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker image...'
-                sh 'docker build -t chat_app:latest .'
+                sh 'docker build -t chat-app:${env.BUILD_NUMBER} .'
+                sh 'docker tag chat-app:${env.BUILD_NUMBER} chat-app:latest'
             }
         }
 
@@ -52,7 +53,7 @@ pipeline {
                 sh '''
                     docker stop chat-app || true
                     docker rm chat-app || true
-                    docker run -d --name chat-app -p 8080:8080 chat_app:latest
+                    docker run -d --name chat-app -p 8080:8080 chat-app:${env.BUILD_NUMBER}
                 '''
             }
         }
@@ -68,6 +69,7 @@ pipeline {
         always {
             echo '🧹 Cleaning up...'
             sh './gradlew --stop || true'
+            sh 'docker image prune -a -f || true'
         }
     }
 }

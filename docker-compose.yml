@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   jenkins:
-    image: chat_jenkins:latest
+    image: chat-jenkins
     build:
       context: .
       dockerfile: Dockerfile.jenkins
@@ -56,9 +56,10 @@ services:
       - chatappnet
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+    image: chat-app
     container_name: chat-app
     restart: unless-stopped
     ports:
